@@ -19,7 +19,9 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
-    this.firestore
+    const ext = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase()
+    if (ext === "jpg" || ext === "png" || ext === "jpeg") {
+      this.firestore
       .storage
       .ref(`justificatifs/${fileName}`)
       .put(file)
@@ -27,7 +29,11 @@ export default class NewBill {
       .then(url => {
         this.fileUrl = url
         this.fileName = fileName
+        this.ext = ext
       })
+    } else {
+      window.alert("Choose a jpg, jpeg, or png file")
+    }
   }
   handleSubmit = e => {
     e.preventDefault()
@@ -45,8 +51,12 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
-    this.createBill(bill)
-    this.onNavigate(ROUTES_PATH['Bills'])
+    if (this.ext === "jpg" || this.ext === "png" || this.ext === "jpeg") {
+      this.createBill(bill)
+      this.onNavigate(ROUTES_PATH['Bills'])
+    } else {
+      window.alert("Choose a jpg, jpeg, or png file")
+    }
   }
 
   // not need to cover this function by tests
