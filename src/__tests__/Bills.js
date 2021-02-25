@@ -1,18 +1,30 @@
+<<<<<<< HEAD
 import { fireEvent, screen } from "@testing-library/dom"
 import jestdom from '@testing-library/jest-dom'
+=======
+import { screen } from "@testing-library/dom"
+>>>>>>> main
 import userEvent from '@testing-library/user-event'
 import Bills  from "../containers/Bills.js"
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
+<<<<<<< HEAD
 import VerticalLayout from "./VerticalLayout.js"
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import firebase from "../__mocks__/firebase"
 import { ROUTES, ROUTES_PATH } from "../constants/routes"
 import Router from "../app/Router.js"
+=======
+import VerticalLayout from './VerticalLayout.js'
+import { localStorageMock } from "../__mocks__/localStorage.js"
+import firebase from "../__mocks__/firebase"
+import { ROUTES } from "../constants/routes"
+>>>>>>> main
 
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
+<<<<<<< HEAD
     test("Then bill icon in vertical layout should be highlighted", () => {  
       //define window.location
       let windowCopy = {...window}
@@ -41,6 +53,14 @@ describe("Given I am connected as an employee", () => {
       //expect(divIcon1).toBeTruthy()
       expect(divIcon1.classList.contains('active-icon')).toBeTruthy()
       //expect(divIcon1).toHaveClass('active-icon') //?????????????  
+=======
+    test("Then bill icon in vertical layout should be highlighted", () => {
+      const html = BillsUI({ data: []})
+      document.body.innerHTML = html
+      //to-do write expect expression
+      const billIcon = screen.getByTestId("icon-window")
+      expect(billIcon.classList.contains("active-icon")).toBeTruthy()
+>>>>>>> main
     })
     test("Then bills should be ordered from earliest to latest", () => {
       const billsToDisplay = [...bills]
@@ -50,7 +70,11 @@ describe("Given I am connected as an employee", () => {
       const html = BillsUI({ data: billsToDisplay })
       document.body.innerHTML = html
       const dates = screen.getAllByText(/^(19|20)\d\d[- \.](0[1-9]|1[012])[- \.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
+<<<<<<< HEAD
       const antiChrono = (a, b) => ((a > b) ? 1 : -1)
+=======
+      const antiChrono = (a, b) => ((a < b) ? 1 : -1)
+>>>>>>> main
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
@@ -113,9 +137,14 @@ describe('When I am connected as an employee and I am on the bills page', () => 
 
       const handleClickIconEye = jest.fn(bill.handleClickIconEye)
       const eyeIcon = screen.getAllByTestId('icon-eye')
+<<<<<<< HEAD
       eyeIcon.forEach(icon => {icon.addEventListener('click', handleClickIconEye(icon))})
 
       userEvent.click(eyeIcon[0])
+=======
+      eye[0].addEventListener('click', handleClickIconEye(eye[0]))
+      userEvent.click(eye[0])
+>>>>>>> main
       expect(handleClickIconEye).toHaveBeenCalled()
 
       const modale = screen.getByTestId('modaleFileEmployee')

@@ -34,7 +34,11 @@ export default class {
     if (this.firestore) {
       return this.firestore
       .bills()
+<<<<<<< HEAD
       //.orderBy('date')
+=======
+      .orderBy('date')
+>>>>>>> main
       .get()
       .then(snapshot => {
         const bills = snapshot.docs
