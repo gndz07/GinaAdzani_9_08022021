@@ -8,9 +8,9 @@ export default class {
     this.onNavigate = onNavigate
     this.firestore = firestore
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
-    if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
+    /* istanbul ignore else */if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
     const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
-    if (iconEye) iconEye.forEach(icon => {
+    /* istanbul ignore else */if (iconEye) iconEye.forEach(icon => {
       icon.addEventListener('click', (e) => this.handleClickIconEye(icon))
     })
     new Logout({ document, localStorage, onNavigate })
@@ -24,7 +24,7 @@ export default class {
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
     $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
-    $('#modaleFile').modal('show')
+    if (typeof $('#modaleFile').modal === 'function') $('#modaleFile').modal('show')
   }
 
   // not need to cover this function by tests
@@ -34,16 +34,18 @@ export default class {
     if (this.firestore) {
       return this.firestore
       .bills()
-      .orderBy('date')
+      //.orderBy('date')
       .get()
       .then(snapshot => {
         const bills = snapshot.docs
           .map(doc => ({
             ...doc.data(),
-            date: formatDate(doc.data().date),
-            status: formatStatus(doc.data().status)
+            dateFormatted: formatDate(doc.data().date),
+            status: formatStatus(doc.data().status),
+            date: doc.data().date
           }))
           .filter(bill => bill.email === userEmail)
+          //.sort((a, b) => new Date(b.date) - new Date(a.date))
         return bills
       })
       .catch(error => error)

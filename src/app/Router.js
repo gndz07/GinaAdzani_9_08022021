@@ -3,15 +3,16 @@ import Login, { PREVIOUS_LOCATION } from "../containers/Login.js"
 import Bills  from "../containers/Bills.js"
 import NewBill from "../containers/NewBill.js"
 import Dashboard from "../containers/Dashboard.js"
-
 import BillsUI from "../views/BillsUI.js"
 import DashboardUI from "../views/DashboardUI.js"
+import VerticalLayout from "../views/VerticalLayout.js"
 
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js"
 
 export default () => {
   const rootDiv = document.getElementById('root')
-  rootDiv.innerHTML = ROUTES({ pathname: window.location.pathname })
+  let pathname = window.location.pathname
+  rootDiv.innerHTML = ROUTES({ pathname })
 
   window.onNavigate = (pathname) => {
 
@@ -25,12 +26,12 @@ export default () => {
       document.body.style.backgroundColor="#0E5AE5"
       new Login({ document, localStorage, onNavigate, PREVIOUS_LOCATION, firestore })
     } else if (pathname === ROUTES_PATH['Bills']) {
-      rootDiv.innerHTML = ROUTES({ pathname, loading: true })
-      const divIcon1 = document.getElementById('layout-icon1')
-      const divIcon2 = document.getElementById('layout-icon2')
-      divIcon1.classList.add('active-icon')
-      divIcon2.classList.remove('active-icon')
-      const bills = new Bills({ document, onNavigate, firestore, localStorage  })
+      rootDiv.innerHTML = ROUTES({ pathname, loading: true });
+      const divIcon1 = document.getElementById('layout-icon1');
+      const divIcon2 = document.getElementById('layout-icon2');
+      divIcon1.classList.add('active-icon');
+      divIcon2.classList.remove('active-icon');
+      const bills = new Bills({ document, onNavigate, firestore, localStorage  });
       bills.getBills().then(data => {
         rootDiv.innerHTML = BillsUI({ data })
         const divIcon1 = document.getElementById('layout-icon1')
