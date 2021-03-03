@@ -22,7 +22,6 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = file.name.split(/\\/g)
     const fileName = filePath[filePath.length-1]
-<<<<<<< HEAD
     const ext = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase()
     const acceptedFormat = ['jpg', 'png', 'jpeg']
     if (acceptedFormat.includes(ext)) {
@@ -30,22 +29,6 @@ export default class NewBill {
     } else {
       this.document.querySelector(`input[data-testid="file"]`).value = ""
       this.falseAlert()
-=======
-    const ext = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase()
-    if (ext === "jpg" || ext === "png" || ext === "jpeg") {
-      this.firestore
-      .storage
-      .ref(`justificatifs/${fileName}`)
-      .put(file)
-      .then(snapshot => snapshot.ref.getDownloadURL())
-      .then(url => {
-        this.fileUrl = url
-        this.fileName = fileName
-        this.ext = ext
-      })
-    } else {
-      window.alert("Choose a jpg, jpeg, or png file")
->>>>>>> main
     }
   }
   handleSubmit = e => {
@@ -64,19 +47,10 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
-<<<<<<< HEAD
     
     this.createBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
 
-=======
-    if (this.ext === "jpg" || this.ext === "png" || this.ext === "jpeg") {
-      this.createBill(bill)
-      this.onNavigate(ROUTES_PATH['Bills'])
-    } else {
-      window.alert("Choose a jpg, jpeg, or png file")
-    }
->>>>>>> main
   }
 
   // not need to cover this function by tests
@@ -92,18 +66,17 @@ export default class NewBill {
     }
   }
   handleFile = (file, fileName) => {
-  if (this.firestore) {
-    this.firestore
-    .storage
-    .ref(`justificatifs/${fileName}`)
-    .put(file)
-    .then(snapshot => snapshot.ref.getDownloadURL())
-    .then(url => {
-      this.fileUrl = url
-      this.fileName = fileName
-    })
-    .catch(error => error)
+    if (this.firestore) {
+      this.firestore
+      .storage
+      .ref(`justificatifs/${fileName}`)
+      .put(file)
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(url => {
+        this.fileUrl = url
+        this.fileName = fileName
+      })
+      .catch(error => error)
+    }
   }
-}
-
 }
