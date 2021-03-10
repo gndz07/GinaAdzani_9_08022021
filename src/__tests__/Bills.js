@@ -68,7 +68,7 @@ describe('When I am connected as an employee and I am on the bills page', () => 
   })
 
   describe('When I click on the eye icon', () => {
-    test('A modal should open', () => {
+    test('A modal should open', async () => {
       Object.defineProperty(window, 'localStorage', {value: localStorageMock})
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee'
@@ -81,15 +81,15 @@ describe('When I am connected as an employee and I am on the bills page', () => 
       const firestore = null
       const bill = new Bills({ document, onNavigate, firestore, localStorage: window.localstorage })
 
-      const handleClickIconEye = jest.fn(bill.handleClickIconEye)
-      const eyeIcon = screen.getAllByTestId('icon-eye')
-      eyeIcon.forEach(icon => {icon.addEventListener('click', handleClickIconEye(icon))})
-
-      userEvent.click(eyeIcon[0])
+      $.fn.modal = jest.fn()
+      const eyeIcon = screen.getAllByTestId("icon-eye")[0]
+      const handleClickIconEye = jest.fn((e) => {
+        e.preventDefault()
+        bill.handleClickIconEye(eyeIcon)
+      })
+      eyeIcon.addEventListener("click", handleClickIconEye)
+      fireEvent.click(eyeIcon)
       expect(handleClickIconEye).toHaveBeenCalled()
-
-      const modale = screen.getByTestId('modaleFileEmployee')
-      expect(modale).toBeTruthy()
     })
   })
 })
